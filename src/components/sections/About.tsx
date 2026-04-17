@@ -3,10 +3,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import * as React from 'react';
 import { motion } from 'motion/react';
 import { CheckCircle2, ChevronRight } from 'lucide-react';
-
-const profileImg = '/profile.jpeg';
+import profilePng from '../../profile.png';
 
 const WHY_WORK_WITH_ME = [
   'Expert in Facebook & Instagram Ad algorithms.',
@@ -17,6 +17,20 @@ const WHY_WORK_WITH_ME = [
 ];
 
 export const About = () => {
+  const [imgSrc, setImgSrc] = React.useState('/profile.jpeg');
+  const [errorCount, setErrorCount] = React.useState(0);
+
+  const handleImgError = () => {
+    if (errorCount === 0) {
+      setImgSrc('/profile_alt.png');
+    } else if (errorCount === 1) {
+      setImgSrc(profilePng);
+    } else if (errorCount === 2) {
+      setImgSrc('https://pollinations.ai/p/professional-portrait-digital-marketing-specialist-man-suit-clean-background-8k?width=800&height=1200&nologo=true');
+    }
+    setErrorCount(prev => prev + 1);
+  };
+
   return (
     <section id="about" className="py-24 bg-bg">
       <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center">
@@ -30,22 +44,10 @@ export const About = () => {
         >
           <div className="aspect-[2/3] md:aspect-[3/4.5] rounded-[40px] overflow-hidden border border-white/10 bg-white/5 accent-glow">
              <img 
-               src={profileImg} 
+               src={imgSrc} 
                alt="Ashraf - Digital Marketing Specialist" 
                className="w-full h-full object-cover object-top"
-               referrerPolicy="no-referrer"
-               onError={(e) => {
-                 const img = e.target as HTMLImageElement;
-                 // Avoid infinite loops
-                 if (img.dataset.errorAttempted) return;
-                 
-                 if (img.src.includes('profile.jpeg')) {
-                   img.src = '/profile_alt.png';
-                 } else if (img.src.includes('profile_alt.png')) {
-                   img.dataset.errorAttempted = 'true';
-                   img.src = 'https://pollinations.ai/p/professional-portrait-digital-marketing-specialist-man-suit-clean-background-8k?width=800&height=1200&nologo=true';
-                 }
-               }}
+               onError={handleImgError}
              />
           </div>
         </motion.div>

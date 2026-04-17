@@ -6,10 +6,23 @@
 import * as React from 'react';
 import { motion } from 'motion/react';
 import { Calendar, MousePointer2, Briefcase } from 'lucide-react';
-
-const profileImg = '/profile.jpeg';
+import profilePng from '../../profile.png';
 
 export const Hero = () => {
+  const [imgSrc, setImgSrc] = React.useState('/profile.jpeg');
+  const [errorCount, setErrorCount] = React.useState(0);
+
+  const handleImgError = () => {
+    if (errorCount === 0) {
+      setImgSrc('/profile_alt.png');
+    } else if (errorCount === 1) {
+      setImgSrc(profilePng);
+    } else if (errorCount === 2) {
+      setImgSrc('https://pollinations.ai/p/professional-digital-marketing-specialist-man-blazer-vintage-aesthetic-cinematic-8k?width=800&height=1000&nologo=true');
+    }
+    setErrorCount(prev => prev + 1);
+  };
+
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-20 px-6 lg:px-20 overflow-hidden bg-bg">
       <div className="max-w-[1440px] mx-auto w-full grid lg:grid-cols-2 gap-12 items-center">
@@ -57,23 +70,12 @@ export const Hero = () => {
         >
           <div className="relative w-full max-w-[500px] aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 accent-glow">
             <img 
-              src={profileImg} 
+              src={imgSrc} 
               alt="Ashraf - Digital Marketing Specialist" 
               className="w-full h-full object-cover"
-              referrerPolicy="no-referrer"
-              onError={(e) => {
-                const img = e.target as HTMLImageElement;
-                // Avoid infinite loops
-                if (img.dataset.errorAttempted) return;
-                
-                if (img.src.includes('profile.jpeg')) {
-                  img.src = '/profile_alt.png';
-                } else if (img.src.includes('profile_alt.png')) {
-                  img.dataset.errorAttempted = 'true';
-                  img.src = 'https://pollinations.ai/p/professional-digital-marketing-specialist-man-blazer-vintage-aesthetic-cinematic-8k?width=800&height=1000&nologo=true';
-                }
-              }}
+              onError={handleImgError}
             />
+            
             
             {/* Project Deliver Badge */}
             <motion.div 
