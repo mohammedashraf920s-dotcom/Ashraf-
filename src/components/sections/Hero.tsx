@@ -13,14 +13,20 @@ export const Hero = () => {
   const [errorCount, setErrorCount] = React.useState(0);
 
   const handleImgError = () => {
-    if (errorCount === 0) {
-      setImgSrc('/profile_alt.png');
-    } else if (errorCount === 1) {
-      setImgSrc(profilePng);
-    } else if (errorCount === 2) {
-      setImgSrc('https://pollinations.ai/p/professional-digital-marketing-specialist-man-blazer-vintage-aesthetic-cinematic-8k?width=800&height=1000&nologo=true');
+    const fallbacks = [
+      '/profile.jpeg',
+      '/profile_alt.png',
+      '/profile_old.png',
+      'https://picsum.photos/seed/ashraf-professional/800/1000',
+      'https://api.dicebear.com/7.x/initials/svg?seed=Ashraf&backgroundColor=ffbe33&fontSize=40',
+      'https://pollinations.ai/p/professional-digital-marketing-specialist-man-blazer-vintage-aesthetic-cinematic-8k?width=800&height=1000&nologo=true'
+    ];
+    
+    if (errorCount < fallbacks.length - 1) {
+      const nextIndex = errorCount + 1;
+      setImgSrc(fallbacks[nextIndex]);
+      setErrorCount(nextIndex);
     }
-    setErrorCount(prev => prev + 1);
   };
 
   return (
@@ -70,9 +76,11 @@ export const Hero = () => {
         >
           <div className="relative w-full max-w-[500px] aspect-[4/5] rounded-[40px] overflow-hidden bg-white/5 border border-white/10 accent-glow">
             <img 
+              key={imgSrc}
               src={imgSrc} 
               alt="Ashraf - Digital Marketing Specialist" 
               className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
               onError={handleImgError}
             />
             

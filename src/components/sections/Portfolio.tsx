@@ -102,15 +102,15 @@ export const Portfolio = () => {
               {/* Image Side */}
               <div className="w-full lg:w-1/2 relative group">
                 <div className="aspect-video rounded-[32px] overflow-hidden border border-border bg-white/5 accent-glow relative">
-                  <img 
-                    src={study.image} 
-                    alt={study.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    referrerPolicy="no-referrer"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${study.pickId}/800/450`;
-                    }}
-                  />
+                    <img 
+                      src={study.image} 
+                      alt={study.title} 
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                      referrerPolicy="no-referrer"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = `https://picsum.photos/seed/${study.pickId}/800/450`;
+                      }}
+                    />
                   <div className="absolute top-6 left-6 w-12 h-12 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 flex items-center justify-center text-accent z-10">
                     <study.icon size={24} />
                   </div>

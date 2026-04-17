@@ -21,14 +21,20 @@ export const About = () => {
   const [errorCount, setErrorCount] = React.useState(0);
 
   const handleImgError = () => {
-    if (errorCount === 0) {
-      setImgSrc('/profile_alt.png');
-    } else if (errorCount === 1) {
-      setImgSrc(profilePng);
-    } else if (errorCount === 2) {
-      setImgSrc('https://pollinations.ai/p/professional-portrait-digital-marketing-specialist-man-suit-clean-background-8k?width=800&height=1200&nologo=true');
+    const fallbacks = [
+      '/profile.jpeg',
+      '/profile_alt.png',
+      '/profile_old.png',
+      'https://picsum.photos/seed/ashraf-about/800/1200',
+      'https://api.dicebear.com/7.x/initials/svg?seed=Ashraf&backgroundColor=ffbe33&fontSize=40',
+      'https://pollinations.ai/p/professional-portrait-digital-marketing-specialist-man-suit-clean-background-8k?width=800&height=1200&nologo=true'
+    ];
+
+    if (errorCount < fallbacks.length - 1) {
+      const nextIndex = errorCount + 1;
+      setImgSrc(fallbacks[nextIndex]);
+      setErrorCount(nextIndex);
     }
-    setErrorCount(prev => prev + 1);
   };
 
   return (
@@ -44,9 +50,11 @@ export const About = () => {
         >
           <div className="aspect-[2/3] md:aspect-[3/4.5] rounded-[40px] overflow-hidden border border-white/10 bg-white/5 accent-glow">
              <img 
+               key={imgSrc}
                src={imgSrc} 
                alt="Ashraf - Digital Marketing Specialist" 
                className="w-full h-full object-cover object-top"
+               referrerPolicy="no-referrer"
                onError={handleImgError}
              />
           </div>
